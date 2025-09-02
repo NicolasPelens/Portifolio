@@ -24,6 +24,8 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -57,10 +59,36 @@ body {
   font-weight: 700;
 }
 
-.nav ul {
+.nav {
   display: flex;
-  list-style: none;
+  list-style: none; /* garantindo que não há bullets na lista */
   gap: 2rem;
+  transition: all 0.3s ease;
+}
+
+.nav.active {
+  display: flex !important;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(15, 15, 15, 0.98);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-color);
+  padding: 1rem 0;
+  gap: 0;
+  list-style: none; /* removendo bullets do menu mobile */
+}
+
+.nav.active li {
+  padding: 0.75rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  list-style: none; /* garantindo que cada item não tenha bullet */
+}
+
+.nav.active li:last-child {
+  border-bottom: none;
 }
 
 .nav a {
@@ -96,6 +124,18 @@ body {
   cursor: pointer;
 }
 
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
 .menu-toggle span {
   width: 25px;
   height: 3px;
@@ -111,6 +151,7 @@ body {
   align-items: center;
   background: linear-gradient(135deg, var(--bg-color) 0%, var(--bg-secondary) 100%);
   position: relative;
+  padding: 2rem 0;
 }
 
 .hero::before {
@@ -175,6 +216,35 @@ body {
   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
 }
 
+/* WhatsApp Button */
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  background: #25d366;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  will-change: transform;
+}
+
+.whatsapp-button:hover {
+  background: #20b858;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+  will-change: auto;
+}
+
+.whatsapp-button i {
+  font-size: 1.2rem;
+}
+
 /* Section Styles */
 section {
   padding: 5rem 0;
@@ -232,10 +302,14 @@ section {
   display: flex;
   gap: 2rem;
   margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .stat {
   text-align: center;
+  flex: 1;
+  min-width: 120px;
 }
 
 .stat h3 {
@@ -262,11 +336,13 @@ section {
   overflow: hidden;
   transition: all 0.3s ease;
   border: 1px solid var(--border-color);
+  will-change: transform;
 }
 
 .project-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  will-change: auto;
 }
 
 .project-image {
@@ -404,11 +480,13 @@ section {
   background: var(--bg-color);
   transition: all 0.3s ease;
   border: 1px solid var(--border-color);
+  will-change: transform;
 }
 
 .skill-icon:hover {
   transform: translateY(-5px);
   border-color: var(--primary-color);
+  will-change: auto;
 }
 
 .skill-icon i {
@@ -469,11 +547,13 @@ section {
   border-radius: 50%;
   text-decoration: none;
   transition: all 0.3s ease;
+  will-change: transform;
 }
 
 .social-links a:hover {
   background: var(--secondary-color);
   transform: translateY(-3px);
+  will-change: auto;
 }
 
 .contact-form {
@@ -521,11 +601,14 @@ section {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  will-change: transform;
+  margin-bottom: 1rem;
 }
 
 .submit-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  will-change: auto;
 }
 
 /* Footer */
@@ -564,7 +647,21 @@ section {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 30px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 550px) {
   .nav {
     display: none;
   }
@@ -573,29 +670,100 @@ section {
     display: flex;
   }
 
+  .hero {
+    padding: 2rem 0;
+    min-height: 90vh;
+  }
+
   .hero-title {
     font-size: 2.5rem;
+    line-height: 1.1;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
   }
 
   .about-content {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2rem;
+  }
+
+  .about-image {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .about-image img {
+    max-width: 220px;
+    width: 80%;
+  }
+
+  .about-text {
+    padding: 0 1rem;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-stats {
+    justify-content: space-around;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .stat {
+    min-width: 100px;
+  }
+
+  .stat h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat p {
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
 
   .skills-content {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .contact-content {
     grid-template-columns: 1fr;
-  }
-
-  .about-stats {
-    justify-content: center;
+    gap: 2rem;
   }
 
   .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .skills-icons {
@@ -603,7 +771,25 @@ section {
   }
 
   .skill-icon {
-    padding: 0.5rem;
+    padding: 0.75rem;
+    min-width: 80px;
+  }
+
+  .skill-icon i {
+    font-size: 1.5rem;
+  }
+
+  .contact-form {
+    padding: 1.5rem;
+  }
+
+  .whatsapp-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .whatsapp-button i {
+    font-size: 1.1rem;
   }
 }
 
@@ -612,16 +798,219 @@ section {
     padding: 0 15px;
   }
 
+  .header {
+    padding: 0.75rem 0;
+  }
+
+  .logo h2 {
+    font-size: 1.3rem;
+  }
+
+  .hero {
+    min-height: 85vh;
+    padding: 1.5rem 0;
+  }
+
   .hero-title {
     font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  section {
+    padding: 2.5rem 0;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-image img {
+    max-width: 180px;
+    width: 70%;
+  }
+
+  .about-text {
+    padding: 0 0.5rem;
+  }
+
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
   }
 
   .about-stats {
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .stat {
+    min-width: 80px;
+  }
+
+  .stat h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat p {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .project-content {
+    padding: 1.25rem;
+  }
+
+  .project-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .project-content p {
+    font-size: 0.9rem;
+  }
+
+  .project-tags {
+    gap: 0.4rem;
+  }
+
+  .project-tags span {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .skills-category h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .skill-item {
+    margin-bottom: 1.5rem;
+  }
+
+  .skill-info {
+    font-size: 0.9rem;
+  }
+
+  .skills-icons {
+    gap: 0.75rem;
+  }
+
+  .skill-icon {
+    padding: 0.5rem;
+    min-width: 70px;
+  }
+
+  .skill-icon i {
+    font-size: 1.25rem;
+  }
+
+  .skill-icon span {
+    font-size: 0.8rem;
+  }
+
+  .contact-info h3 {
+    font-size: 1.3rem;
+  }
+
+  .contact-info p {
+    font-size: 0.9rem;
+  }
+
+  .contact-item {
+    font-size: 0.9rem;
+  }
+
+  .contact-form {
+    padding: 1.25rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .submit-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .whatsapp-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .whatsapp-button i {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .about-image img {
+    max-width: 160px;
+    width: 65%;
+  }
+
+  .about-stats {
+    gap: 0.25rem;
+    padding: 0 0.25rem;
+  }
+
+  .stat {
+    min-width: 70px;
+  }
+
+  .stat h3 {
+    font-size: 1.3rem;
+  }
+
+  .stat p {
+    font-size: 0.75rem;
+  }
+
+  .skills-icons {
+    gap: 0.5rem;
+  }
+
+  .skill-icon {
+    padding: 0.4rem;
+    min-width: 60px;
+  }
+
+  .project-tags span {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
   }
 }

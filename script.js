@@ -74,11 +74,33 @@ if (skillsSection) {
 // Mobile menu toggle
 const menuToggle = document.querySelector(".menu-toggle")
 const nav = document.querySelector(".nav")
+const navLinks = document.querySelectorAll(".nav a")
 
 if (menuToggle && nav) {
   menuToggle.addEventListener("click", () => {
     nav.classList.toggle("active")
     menuToggle.classList.toggle("active")
+  })
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("active")
+      menuToggle.classList.remove("active")
+    })
+  })
+
+  document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target) && !menuToggle.contains(e.target)) {
+      nav.classList.remove("active")
+      menuToggle.classList.remove("active")
+    }
+  })
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      nav.classList.remove("active")
+      menuToggle.classList.remove("active")
+    }
   })
 }
 
@@ -100,15 +122,27 @@ if (contactForm) {
       return
     }
 
-    // Simulate form submission
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      alert("Por favor, insira um email válido.")
+      return
+    }
+
     const submitButton = contactForm.querySelector(".submit-button")
     const originalText = submitButton.textContent
 
     submitButton.textContent = "Enviando..."
     submitButton.disabled = true
 
+    // Simulate form submission with EmailJS or similar service
     setTimeout(() => {
-      alert("Mensagem enviada com sucesso! Entrarei em contato em breve.")
+      // Here you would integrate with EmailJS or your backend
+      console.log("[v0] Form data:", { nome, email, mensagem })
+
+      alert(
+        `Obrigado, ${nome}! Sua mensagem foi enviada com sucesso. Entrarei em contato em breve através do email ${email}.`,
+      )
       contactForm.reset()
       submitButton.textContent = originalText
       submitButton.disabled = false
@@ -120,8 +154,11 @@ if (contactForm) {
 window.addEventListener("scroll", () => {
   const scrolled = window.pageYOffset
   const hero = document.querySelector(".hero")
-  if (hero) {
-    hero.style.transform = `translateY(${scrolled * 0.5}px)`
+
+  if (hero && window.innerWidth > 768) {
+    hero.style.transform = `translateY(${scrolled * 0.3}px)`
+  } else if (hero) {
+    hero.style.transform = "translateY(0)"
   }
 })
 
